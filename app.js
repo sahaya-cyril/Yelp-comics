@@ -1,9 +1,12 @@
 const { static } = require("express");
 const express = require("express");
+const bodyParser = require("body-parser");
+
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
 
 const comics = [
     {
@@ -31,6 +34,16 @@ app.get("/comics", (req, res) => {
     res.render("comics", {comics});
 });
 
+app.post("/comics", (req, res) => {
+    console.log(req.body);
+    comics.push(req.body);
+    res.redirect("/comics");
+});
+
+app.get("/comics/new", (req, res) => {
+    res.render("comics_new");
+});
+
 app.listen("3000", () => {
     console.log("yelp_comic is running...");
-});
+}); 
